@@ -1,16 +1,14 @@
 {
   "name": "machinepack-facebookads",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "interact with the facebook marketing api",
   "scripts": {
     "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/https://github.com/CTres/machinepack-facebookads.git"
   },
-
   "keywords": [
     "Facebook-Ads",
     "machines",
