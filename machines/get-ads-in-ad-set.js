@@ -8,7 +8,8 @@ module.exports = {
 
 
   extendedDescription: 'get ads in an ad set and standard metadata',
-
+  sync: true,
+  cacheable: true, 
 
   inputs: {
     adCampaignId: {

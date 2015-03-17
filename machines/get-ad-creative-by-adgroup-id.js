@@ -8,7 +8,8 @@ module.exports = {
 
 
   extendedDescription: 'get the ad creative associated with the ad (adgroup)',
-
+  sync: true,
+  cacheable: true, 
 
   inputs: {
     adGroupId: {

@@ -8,7 +8,8 @@ module.exports = {
 
 
   extendedDescription: 'retrieves the ad account id for a given user',
-
+  sync: true,
+  cacheable: true, 
 
   inputs: {
     adAccountId: {

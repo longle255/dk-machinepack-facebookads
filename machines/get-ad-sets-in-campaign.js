@@ -8,7 +8,8 @@ module.exports = {
 
 
   extendedDescription: 'get all ad sets for a given campaign group, and return id, daily budget, status',
-
+  sync: true,
+  cacheable: true, 
 
   inputs: {
     adCampaignGroupId: {

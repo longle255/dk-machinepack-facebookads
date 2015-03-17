@@ -8,7 +8,8 @@ module.exports = {
 
 
   extendedDescription: 'fetch all ads in ad set and then return top performing ad, determined by impressions served.',
-
+  sync: true, 
+  cacheable: true,
 
   inputs: {
     adCampaignId: {
