@@ -8,8 +8,7 @@ module.exports = {
 
 
   extendedDescription: 'for a given campaign name, retrieve the campaign id ',
-  sync: true,
-  cacheable: true, 
+  cacheable: true,
 
   inputs: {
     adAccountId: {

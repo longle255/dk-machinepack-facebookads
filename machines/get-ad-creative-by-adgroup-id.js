@@ -9,7 +9,7 @@ module.exports = {
 
   extendedDescription: 'get the ad creative associated with the ad (adgroup)',
   sync: true,
-  cacheable: true, 
+  cacheable: true,
 
   inputs: {
     adGroupId: {
@@ -47,7 +47,7 @@ module.exports = {
 
     var doJSONRequest = require('../lib/do-request');
 
-    // GET ad accounts/ and send the api token as a header
+    //GET ad accounts/ and send the api token as a header
     doJSONRequest({
       method: 'get',
       url: ['/v2.2/', inputs.adGroupId ].join(""),
@@ -56,10 +56,11 @@ module.exports = {
         'fields' : 'adcreatives{id,image_url,object_story_spec}'
       },
       headers: {},
-    },
-    function (err, responseBody) {
-      if (err) { return exits.error(err); }
-      return exits.success(responseBody);
-    });
+      },
+      function (err, responseBody) {
+        if (err) { return exits.error(err); }
+        return exits.success(responseBody);
+      }
+    )
   }
 };
