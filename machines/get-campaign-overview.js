@@ -68,6 +68,7 @@ module.exports = {
         removeUnusedValues.push({
           'id' : myJson.data[i].id,
           'daily_budget' : myJson.data[i].daily_budget,
+          'campaign_status' : myJson.data[i].campaign_status,
           'clicks' : myJson.data[i].stats.clicks,
           'impressions' : myJson.data[i].stats.impressions
          });
