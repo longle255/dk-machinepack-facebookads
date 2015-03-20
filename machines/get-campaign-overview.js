@@ -36,6 +36,7 @@ module.exports = {
 
     success: {
       description: 'Here are the ad sets for the inputted campaign',
+      example: 'tons of json',
     },
 
   },
@@ -61,9 +62,10 @@ module.exports = {
       if (err) { return exits.error(err); }
 
       // clean up the response into a useable js object literal
-      var myJson = responseBody.adcampaigns;
       var removeUnusedValues = [];
+      var myJson = responseBody.adcampaigns;
       var len = myJson.data.length;
+
       for (var i=0; i<len; i++){
         removeUnusedValues.push({
           'id' : myJson.data[i].id,
@@ -74,9 +76,10 @@ module.exports = {
          });
        }
 
-      // set the global response json here
+      // set the resultJson, what we pass back at the end, here.
       resultJson = {"adCampaigns" : removeUnusedValues };
 
+      // Now that we have the ad sets associated with the campaign id, get an array of ids for the next call
       // prepare the array of ad campaign ids and indices for the next step in the process
       arrayAdCampaigns = [];
       for (var i = 0; i<resultJson.adCampaigns.length; i++){
@@ -84,15 +87,14 @@ module.exports = {
       };
 
       // FETCH TOP AD FOR EACH AD CAMPAIGN
+      // counter needs to be outside of the function so it can be updated by each iteration independently.
       var counter = 0;
       async.each(arrayAdCampaigns, function(adSet, callbackone) {
 
-
-
-
+        //variables
         var doJSONRequest = require('../lib/do-request');
 
-        // look up all the ads for a given ad set
+        // api call to facebook
         doJSONRequest({
           method: 'get',
           url: ['/v2.2/', adSet.id, '/adgroups' ].join(""),
@@ -102,6 +104,7 @@ module.exports = {
           },
           headers: {},
         },
+
         // handle the response for looking up all the ads in a given ad set.
         function (err, response) {
           if (err) { return exits.error(err); }
@@ -123,13 +126,18 @@ module.exports = {
           // append the existing json with the top ad information.
           resultJson.adCampaigns[adSet.index].topAd = newArray[0] ;
           counter++;
+
+          // if all of the parallel requests have completed, call the callback function
           if (arrayAdCampaigns.length == counter){
             callbackone(resultJson);
           }
 
           function callbackone(resultJson){
+            // variables
+            // counter for the next async.each function
             var countChoco = 0;
             arrayAds = [];
+            // create the array of ad ids and their index in the resultJson so we can fetch more data on each, and return the data to the correct position in the resultJson
             for (var i = 0; i<resultJson.adCampaigns.length; i++){
               arrayAds.push({ "id": resultJson.adCampaigns[i].topAd.id, "index" : i } );
             }
