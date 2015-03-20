@@ -35,8 +35,10 @@ module.exports = {
     },
 
     success: {
+      getExample: function (inputs){
+        return inputs.schema;
+      },
       description: 'Here are the ad sets for the inputted campaign',
-      example: 'tons of json',
     },
 
   },
