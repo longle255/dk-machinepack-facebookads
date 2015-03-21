@@ -158,8 +158,19 @@ module.exports = {
                 },
                 function (err, responseBody) {
                   if (err) { return exits.error(err); }
+                  rb = responseBody.adcreatives.data;
+                  console.log(rb);
+                  console.log(rb[0].object_story_spec.link_data);
+                  removeUnusedValues = []
+                  removeUnusedValues.push({
+                    'id' : rb.id,
+                    'image_url' : rb[0].image_url,
+                    'title' : rb[0].object_story_spec.link_data.name,
+                    'tagline' : rb[0].object_story_spec.link_data.message
+                  });
 
-                  resultJson.adCampaigns[ad.index].topAd.creatives = responseBody.adcreatives.data;
+
+                  resultJson.adCampaigns[ad.index].topAd.creatives = removeUnusedValues[0];
                   countChoco++;
                   if (countChoco == arrayAds.length) {
                     callbacktwo(resultJson);
