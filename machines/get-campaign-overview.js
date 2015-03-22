@@ -159,8 +159,6 @@ module.exports = {
                 function (err, responseBody) {
                   if (err) { return exits.error(err); }
                   rb = responseBody.adcreatives.data;
-                  console.log(rb);
-                  console.log(rb[0].object_story_spec.link_data);
                   removeUnusedValues = []
                   removeUnusedValues.push({
                     'id' : rb.id,
