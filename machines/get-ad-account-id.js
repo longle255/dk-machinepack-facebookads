@@ -48,14 +48,14 @@ module.exports = {
     // GET ad accounts/ and send the api token as a header
     doJSONRequest({
       method: 'get',
-      url: ['/v2.2/', inputs.userId, '/adaccounts'].join(""),
+      url: ['/v2.3/', inputs.userId, '/adaccounts'].join(""),
       data: {
         'access_token': inputs.accessToken,
       },
       headers: {},
     }, function (err, responseBody) {
       if (err) { return exits.error(err); }
-      return exits.success(responseBody.data[0].id);
+      return exits.success(responseBody);
     });
   }
 };
