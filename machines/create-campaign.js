@@ -17,7 +17,7 @@ module.exports = {
       required: true
     },
 
-    pageId: {
+    fbPageId: {
       example: '3213213124',
       description: 'facebook page id',
       required: true
@@ -65,7 +65,7 @@ module.exports = {
 
       doJSONRequest({
         method: 'get',
-        url: ['/v2.3/', inputs.pageId ].join(""),
+        url: ['/v2.3/', inputs.fbPageId ].join(""),
         data: {
           'fields' : 'name',
           'access_token' : inputs.accessToken
