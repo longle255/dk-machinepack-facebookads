@@ -75,7 +75,7 @@ module.exports = {
 
       function (err, page) {
         if (err) { return exits.error(err); }
-
+        console.log(act);
 
         // GET ad accounts/ and send the api token as a header
         doJSONRequest({
