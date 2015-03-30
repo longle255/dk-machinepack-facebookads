@@ -54,7 +54,7 @@ module.exports = {
     // fetch ad campaigns
     doJSONRequest({
       method: 'get',
-      url: ['/v2.3/', inputs.adCampaignGroupId ].join(""),
+      url: ['/v2.2/', inputs.adCampaignGroupId ].join(""),
       data: {
         'access_token': inputs.accessToken,
         'fields' : 'adcampaigns{id,daily_budget,campaign_status,stats}'
@@ -65,9 +65,7 @@ module.exports = {
     // handle the response from facebook
     function (err, responseBody) {
       if (err) { return exits.error(err); }
-      console.log(responseBody);
-      console.log(responseBody.data);
-      if (typeof responseBody.data == "undefined"){
+      if (typeof responseBody.adcampaigns.data == "undefined"){
         return exits.noCampaignsYet('no campaigns yet');
       }
       // clean up the response into a useable js object literal
