@@ -65,7 +65,8 @@ module.exports = {
     // handle the response from facebook
     function (err, responseBody) {
       if (err) { return exits.error(err); }
-      if (typeof responseBody.adcampaigns.data == "undefined"){
+      console.log(responseBody);
+      if (typeof responseBody.adcampaigns === "undefined"){
         return exits.noCampaignsYet('no campaigns yet');
       }
       // clean up the response into a useable js object literal
