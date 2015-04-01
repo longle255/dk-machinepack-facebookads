@@ -40,7 +40,7 @@ module.exports = {
     },
 
     noCampaignsYet: {
-      example: 'no campaigns yet',
+      example: {},
       description: 'when there are no campaigns yet in the campaign group',
     }
 
@@ -65,9 +65,8 @@ module.exports = {
     // handle the response from facebook
     function (err, responseBody) {
       if (err) { return exits.error(err); }
-      console.log(responseBody);
       if (typeof responseBody.adcampaigns === "undefined"){
-        return exits.noCampaignsYet('no campaigns yet');
+        return exits.noCampaignsYet({});
       }
       // clean up the response into a useable js object literal
       var removeUnusedValues = [];
