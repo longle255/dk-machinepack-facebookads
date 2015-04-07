@@ -35,8 +35,7 @@
       "get-ad-creative-by-adgroup-id",
       "get-campaign-overview",
       "get-campaign-details",
-      "create-campaign",
-      "test"
+      "create-campaign"
     ]
   }
 }
