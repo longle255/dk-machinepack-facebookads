@@ -1,19 +1,19 @@
 module.exports = {
 
 
-  friendlyName: 'get ad account id',
+  friendlyName: 'get page',
 
 
-  description: 'get an ad account id for a given user with an access token',
+  description: 'get page name',
 
 
-  extendedDescription: 'retrieves the ad acount id for a given user',
+  extendedDescription: 'retrieves page name',
   cacheable: true,
 
   inputs: {
-    fbUserId: {
-      example: '509501',
-      description: 'facebook user id',
+    fbPageId: {
+      example: '123831290831209312',
+      description: 'facebook page id',
       required: true
     },
 
@@ -35,7 +35,7 @@ module.exports = {
     },
 
     success: {
-      description: 'This is the top ad account associated with the user.',
+      description: 'page name',
     },
 
   },
@@ -48,14 +48,16 @@ module.exports = {
     // GET ad accounts/ and send the api token as a header
     doJSONRequest({
       method: 'get',
-      url: ['/v2.3/', inputs.fbUserId, '/adaccounts'].join(""),
+      url: ['/v2.3/', inputs.fbPageId ].join(""),
       data: {
-        'access_token': inputs.accessToken,
+        'fields' : 'name',
+        'access_token' : inputs.accessToken
       },
       headers: {},
     }, function (err, responseBody) {
       if (err) { return exits.error(err); }
       return exits.success(responseBody);
     });
+    // here we are fixing this for create-campaign
   }
 };
