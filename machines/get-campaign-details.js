@@ -53,7 +53,7 @@ module.exports = {
       url: ['/v2.3/', inputs.adCampaignId ].join(""),
       data: {
         'access_token': inputs.accessToken,
-        'fields' : 'id,daily_budget,campaign_status,insights{ctr,reach, spend, clicks}'
+        'fields' : 'targeting,id,daily_budget,campaign_status,insights{ctr,reach, spend, clicks}'
       },
       headers: {},
     },
@@ -61,15 +61,74 @@ module.exports = {
     function (err, responseBody) {
       if (err) { return exits.error(err); }
       rb = responseBody;
+      var countries  = require('country-data').countries;
+      var lookup  = require('country-data').lookup;
+      
+      // PARSE GENDER !
+      if (typeof rb.targeting.gender == 'undefined'){
+        rb.targeting.gender = 'all';
+      } else if (rb.targeting.gender == 1) {
+        rb.targeting.gender = 'male';
+      } else {
+        rb.targeting.gender = 'female';
+      }
+
+      locationsArray =[];
+      locations = rb.targeting.geo_locations;
+      if (typeof rb.targeting.geo_locations !== 'undefined'){
+        if (typeof locations.countries !== 'undefined') {
+          countryList = []
+          for (i = 0; i < locations.countries.length; i++) {
+            tempCountry = lookup.countries({
+              alpha2 : locations.countries[i]
+            })[0].name
+            locationsArray.push(tempCountry);
+          }
+        }
+
+        if (typeof locations.cities !== 'undefined') {
+          cleanedList = [];
+          for ( var i = 0; i < locations.cities.length; i++) {
+            locationsArray.push(locations.cities[i].name);
+          }
+        }
+        if (typeof locations.regions !== 'undefined') {
+          cleanedList = [];
+          for ( var i = 0; i < locations.regions.length; i++) {
+            locationsArray.push(locations.regions[i].name);
+          }
+        }
+      }
+
+      interestsArray =[]
+      if (typeof rb.targeting.interests !== 'undefined'){
+        rb.targeting.interests.forEach(function(value) {
+          interestsArray.push(value.name);
+        });
+      }
+
       var newArray = [];
       newArray.push({
         'id' : rb.id,
+        'status' : rb.campaign_status,
+        "targeting" : {
+          'age_min' : rb.targeting.age_min,
+          'age_max' : rb.targeting.age_max,
+          'gender'  : rb.targeting.gender,
+          'interests' : interestsArray,
+          'locations' : locationsArray,
+          }
+      })
+
+      if (typeof rb.insights!== 'undefined')
+      {
+      newArray.push({
         'clicks' : rb.insights.data[0].clicks,
         'daily_budget' : rb.daily_budget,
         'people' : rb.insights.data[0].reach,
-        'ctr' : rb.insights.data[0].ctr,
-        'status' : rb.campaign_status
-      });
+        'ctr' : rb.insights.data[0].ctr
+      })
+    }
 
       if (rb.campaign_status == "ACTIVE" && rb.daily_budget > 0) {
         newArray[0].status = 'ACTIVE';
