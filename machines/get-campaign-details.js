@@ -63,7 +63,7 @@ module.exports = {
       rb = responseBody;
       var countries  = require('country-data').countries;
       var lookup  = require('country-data').lookup;
-      
+
       // PARSE GENDER !
       if (typeof rb.targeting.gender == 'undefined'){
         rb.targeting.gender = 'all';
@@ -120,15 +120,13 @@ module.exports = {
           }
       })
 
-      if (typeof rb.insights!== 'undefined')
-      {
+
       newArray.push({
         'clicks' : rb.insights.data[0].clicks,
         'daily_budget' : rb.daily_budget,
         'people' : rb.insights.data[0].reach,
         'ctr' : rb.insights.data[0].ctr
       })
-    }
 
       if (rb.campaign_status == "ACTIVE" && rb.daily_budget > 0) {
         newArray[0].status = 'ACTIVE';
@@ -153,21 +151,29 @@ module.exports = {
           console.log();
           if (err) { return exits.error(err); }
 
+          // sort by performance
           response.data.sort(function(a,b){
             return b.insights.data[0].impressions - a.insights.data[0].impressions;
           })
 
-          resultJson.ads = response.data
-        // PARSING RESPONSE INTO THE CORRECT FORMAT
+          cleanedResponse = [];
+          for (i = 0; i < response.data.length; i++)
+            cleanedResponse.push({
+              "id": response.data[i].id,
+              "status" : response.data[i].adgroup_status,
+              "cpc" : response.data[i].insights.data[0].cpc,
+              "clicks" : response.data[i].insights.data[0].clicks,
+              "impressions" : response.data[i].insights.data[0].impressions
+            })
+            console.log(cleanedResponse);
+
+          resultJson.ads = cleanedResponse;
 
 
       // variables
       // counter for the next async.each function
       var countChoco = 0;
       arrayAds = [];
-
-
-
       // create the array of ad ids and their index in the resultJson so we can fetch more data on each, and return the data to the correct position in the resultJson
       for (var i = 0; i<resultJson.ads.length; i++){
         arrayAds.push({ "id": resultJson.ads[i].id, "index" : i } );
@@ -189,15 +195,10 @@ module.exports = {
           function (err, responseBody) {
             if (err) { return exits.error(err); }
             rb = responseBody.adcreatives.data;
-            removeUnusedValues = []
-            removeUnusedValues.push({
-              'image_url' : rb[0].image_url,
-              'title' : rb[0].object_story_spec.link_data.name,
-              'tagline' : rb[0].object_story_spec.link_data.message
-            });
+            resultJson.ads[ad.index].image_url = rb[0].image_url;
+            resultJson.ads[ad.index].title = rb[0].object_story_spec.link_data.name;
+            resultJson.ads[ad.index].tagline = rb[0].object_story_spec.link_data.message;
 
-
-            resultJson.ads[ad.index].creatives = removeUnusedValues[0];
             countChoco++;
             if (countChoco == arrayAds.length) {
               callbacktwo(resultJson);
