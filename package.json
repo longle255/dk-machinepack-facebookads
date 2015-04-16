@@ -1,6 +1,6 @@
 {
   "name": "machinepack-facebookads",
-  "version": "1.3.13",
+  "version": "1.3.14",
   "description": "interact with the facebook marketing api",
   "scripts": {
     "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "machine": "^3.0.0",
-    "country-data" : "^0.0.19"
+    "country-data": "^0.0.19"
   },
   "devDependencies": {
     "test-machinepack-mocha": "^0.2.2"
