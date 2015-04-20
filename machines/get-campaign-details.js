@@ -34,6 +34,7 @@ module.exports = {
       description: 'The Facebook API returned an error (i.e. a non-2xx status code)',
     },
 
+
     success: {
 
       description: 'Here are the ad sets for the inputted campaign',
@@ -120,12 +121,15 @@ module.exports = {
           }
       })
 
+      if (typeof rb.insights == 'undefined'){
+        return exits.error({'error' : 'campaign has not run yet'})
+      }
 
       newArray.push({
-        'clicks' : rb.insights.data[0].clicks,
-        'daily_budget' : rb.daily_budget,
-        'people' : rb.insights.data[0].reach,
-        'ctr' : rb.insights.data[0].ctr
+        'clicks' : rb.insights.data[0].clicks || {},
+        'daily_budget' : rb.daily_budget || {},
+        'people' : rb.insights.data[0].reach || {},
+        'ctr' : rb.insights.data[0].ctr || {}
       })
 
       if (rb.campaign_status == "ACTIVE" && rb.daily_budget > 0) {
@@ -134,7 +138,6 @@ module.exports = {
         newArray[0].status = 'INCREASE DAILY SPEND TO RESUME';
       }
       resultJson = { "adset" : newArray[0] };
-
 
       // fetch all ads for the ad set
       doJSONRequest({
@@ -148,10 +151,11 @@ module.exports = {
       },
 
         function (err, response) {
-          console.log();
           if (err) { return exits.error(err); }
 
           // sort by performance
+
+
           response.data.sort(function(a,b){
             return b.insights.data[0].impressions - a.insights.data[0].impressions;
           })
@@ -165,8 +169,6 @@ module.exports = {
               "clicks" : response.data[i].insights.data[0].clicks,
               "impressions" : response.data[i].insights.data[0].impressions
             })
-            console.log(cleanedResponse);
-
           resultJson.ads = cleanedResponse;
 
 
