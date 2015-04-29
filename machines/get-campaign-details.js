@@ -145,7 +145,7 @@ module.exports = {
         url: ['/v2.3/', resultJson.adset.id, '/adgroups' ].join(""),
         data: {
          'access_token': inputs.accessToken,
-         'fields' : "creative,adgroup_status,insights{cpc,impressions,clicks}"
+         'fields' : "creative,adgroup_status,insights{cpc,impressions,clicks,reach}"
         },
         headers: {},
       },
@@ -167,7 +167,8 @@ module.exports = {
               "status" : response.data[i].adgroup_status,
               "cpc" : response.data[i].insights.data[0].cpc,
               "clicks" : response.data[i].insights.data[0].clicks,
-              "impressions" : response.data[i].insights.data[0].impressions
+              "impressions" : response.data[i].insights.data[0].impressions,
+              "people" : response.data[i].insights.data[0].reach,
             })
           resultJson.ads = cleanedResponse;
 
