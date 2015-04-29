@@ -190,16 +190,19 @@ module.exports = {
           url: ['/v2.2/', ad.id ].join(""),
           data: {
             'access_token': inputs.accessToken,
-            'fields' : 'adcreatives{image_url,object_story_spec}'
+            'fields' : 'adcreatives{id,image_url,object_story_spec}'
           },
           headers: {},
           },
           function (err, responseBody) {
             if (err) { return exits.error(err); }
             rb = responseBody.adcreatives.data;
-            resultJson.ads[ad.index].image_url = rb[0].image_url;
-            resultJson.ads[ad.index].title = rb[0].object_story_spec.link_data.name;
-            resultJson.ads[ad.index].tagline = rb[0].object_story_spec.link_data.message;
+            console.log(resultJson.ads[ad.index]);
+            resultJson.ads[ad.index].creatives = {
+              "image_url" : rb[0].image_url,
+              "title" : rb[0].object_story_spec.link_data.name,
+              "tagline" : rb[0].object_story_spec.link_data.message,
+            }
 
             countChoco++;
             if (countChoco == arrayAds.length) {
