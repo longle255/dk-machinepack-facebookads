@@ -73,11 +73,18 @@ module.exports = {
       var myJson = responseBody.adcampaigns;
       var len = myJson.data.length;
 
+
+
       for (var i=0; i<len; i++){
+        if (myJson.data[i].daily_budget == '0'){
+          var campaignStatus = 'PAUSED';
+        } else {
+          var campaignStatus = myJson.data[i].campaign_status ;
+        }
         removeUnusedValues.push({
           'id' : myJson.data[i].id,
           'daily_budget' : myJson.data[i].daily_budget,
-          'campaign_status' : myJson.data[i].campaign_status,
+          'campaign_status' : campaignStatus,
           'clicks' : myJson.data[i].stats.clicks,
           'impressions' : myJson.data[i].stats.impressions
          });
