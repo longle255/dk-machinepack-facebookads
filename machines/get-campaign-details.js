@@ -197,7 +197,6 @@ module.exports = {
           function (err, responseBody) {
             if (err) { return exits.error(err); }
             rb = responseBody.adcreatives.data;
-            console.log(resultJson.ads[ad.index]);
             resultJson.ads[ad.index].creatives = {
               "image_url" : rb[0].image_url,
               "title" : rb[0].object_story_spec.link_data.name,
@@ -206,6 +205,17 @@ module.exports = {
 
             countChoco++;
             if (countChoco == arrayAds.length) {
+
+              // once we have finished getting all the data, split the ads into two arrays, based on active or not.
+
+              resultJson.disabledAds = resultJson.ads.filter( function(ad) {
+                return ad.status == 'PAUSED';
+              }),
+
+              resultJson.ads = resultJson.ads.filter( function(ad) {
+                return ad.status == 'ACTIVE';
+              }),
+
               callbacktwo(resultJson);
             }
           }
