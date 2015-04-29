@@ -54,16 +54,20 @@ module.exports = {
       url: ['/v2.3/', inputs.adCampaignId ].join(""),
       data: {
         'access_token': inputs.accessToken,
-        'fields' : 'targeting,id,daily_budget,campaign_status,insights{ctr,reach, spend, clicks}'
+        'fields' : 'targeting,id,daily_budget,campaign_status,insights{ctr,reach, spend, clicks,impressions}'
       },
       headers: {},
     },
 
     function (err, responseBody) {
+
       if (err) { return exits.error(err); }
       rb = responseBody;
       var countries  = require('country-data').countries;
       var lookup  = require('country-data').lookup;
+
+        console.log('her');
+        console.log(rb.insights.data[0]);
 
       // PARSE GENDER !
       if (typeof rb.targeting.gender == 'undefined'){
@@ -112,6 +116,11 @@ module.exports = {
       newArray.push({
         'id' : rb.id,
         'status' : rb.campaign_status,
+        'clicks' : rb.insights.data[0].clicks || {},
+        'daily_budget' : rb.daily_budget || 0,
+        'people' : rb.insights.data[0].reach || {},
+        'ctr' : rb.insights.data[0].ctr || {},
+        'impressions' : rb.insights.data[0].impressions,
         "targeting" : {
           'age_min' : rb.targeting.age_min,
           'age_max' : rb.targeting.age_max,
@@ -124,13 +133,6 @@ module.exports = {
       if (typeof rb.insights == 'undefined'){
         return exits.error({'error' : 'campaign has not run yet'})
       }
-
-      newArray.push({
-        'clicks' : rb.insights.data[0].clicks || {},
-        'daily_budget' : rb.daily_budget || {},
-        'people' : rb.insights.data[0].reach || {},
-        'ctr' : rb.insights.data[0].ctr || {}
-      })
 
       if (rb.campaign_status == "ACTIVE" && rb.daily_budget > 0) {
         newArray[0].status = 'ACTIVE';
@@ -145,7 +147,7 @@ module.exports = {
         url: ['/v2.3/', resultJson.adset.id, '/adgroups' ].join(""),
         data: {
          'access_token': inputs.accessToken,
-         'fields' : "creative,adgroup_status,insights{cpc,impressions,clicks,reach}"
+         'fields' : "creative,adgroup_status,insights{ctr,impressions,clicks,reach}"
         },
         headers: {},
       },
@@ -165,7 +167,7 @@ module.exports = {
             cleanedResponse.push({
               "id": response.data[i].id,
               "status" : response.data[i].adgroup_status,
-              "cpc" : response.data[i].insights.data[0].cpc,
+              "ctr" : response.data[i].insights.data[0].ctr,
               "clicks" : response.data[i].insights.data[0].clicks,
               "impressions" : response.data[i].insights.data[0].impressions,
               "people" : response.data[i].insights.data[0].reach,
