@@ -60,14 +60,16 @@ module.exports = {
     },
 
     function (err, responseBody) {
-
+      if (typeof responseBody.insights == 'undefined'){
+        return exits.error({'error' : 'campaign has not run yet'})
+      }
       if (err) { return exits.error(err); }
-      rb = responseBody;
+
+      var rb = responseBody;
       var countries  = require('country-data').countries;
       var lookup  = require('country-data').lookup;
 
-        console.log('her');
-        console.log(rb.insights.data[0]);
+
 
       // PARSE GENDER !
       if (typeof rb.targeting.gender == 'undefined'){
@@ -113,6 +115,8 @@ module.exports = {
       }
 
       var newArray = [];
+
+
       newArray.push({
         'id' : rb.id,
         'status' : rb.campaign_status,
@@ -129,10 +133,6 @@ module.exports = {
           'locations' : locationsArray,
           }
       })
-
-      if (typeof rb.insights == 'undefined'){
-        return exits.error({'error' : 'campaign has not run yet'})
-      }
 
       if (rb.campaign_status == "ACTIVE" && rb.daily_budget > 0) {
         newArray[0].status = 'ACTIVE';

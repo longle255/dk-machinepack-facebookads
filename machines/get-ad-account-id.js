@@ -4,7 +4,7 @@ module.exports = {
   friendlyName: 'get ad account id',
 
 
-  description: 'get an ad account id for a given user with an access token',
+  description: 'get ad account ids for a given user with an access token',
 
 
   extendedDescription: 'retrieves the ad acount id for a given user',
