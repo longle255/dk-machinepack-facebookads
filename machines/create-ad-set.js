@@ -71,18 +71,17 @@ module.exports = {
           method: 'post',
           url: ['/v2.3/', account_id.data[0].id, '/adcampaigns' ].join(""),
           data: {
-            'name' : ['Woos - ', page.name, Date.now()].join(""),
+            'name' : ['Woo - ', page.name,'-', Date.now()].join(""),
             'bid_type' : 'ABSOLUTE_OCPM' ,
             'bid_info' : {"REACH" : 100, "CLICKS" : 200},
             'campaign_status' : 'PAUSED',
             'daily_budget' : '1000',
             'campaign_group_id' : inputs.campaignGroupId,
-            'targeting' : {'geo_locations' : 'Boston'}
-            'bid_info' :
+            'targeting' : {'geo_locations' : 'Boston'},
             'objective' : 'WEBSITE_CONVERSIONS',
             'campaign_group_status' : 'PAUSED',
             'access_token': inputs.accessToken
-            
+
           },
           headers: {},
         },
