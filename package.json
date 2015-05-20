@@ -37,7 +37,8 @@
       "get-campaign-overview",
       "get-campaign-details",
       "create-campaign",
-      "create-ad-set"
+      "create-ad-set",
+      "update-ad-set"
     ]
   }
 }

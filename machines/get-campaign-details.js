@@ -46,6 +46,7 @@ module.exports = {
   fn: function (inputs,exits) {
     // fetch ad set information
     var async = require('async');
+    var emptyResponse = require('../lib/utility');
     var doJSONRequest = require('../lib/do-request');
 
     // GET ad accounts/ and send the api token as a header
@@ -60,10 +61,14 @@ module.exports = {
     },
 
     function (err, responseBody) {
-      if (typeof responseBody.insights == 'undefined'){
-        return exits.error({'error' : 'campaign has not run yet'})
-      }
       if (err) { return exits.error(err); }
+      // if the insights is empty, fill the json to stay consistent with ios app model
+      if (typeof responseBody.insights == 'undefined') {
+        responseBody.insights = emptyResponse.insights;
+        return exits.success(responseBody);
+      }
+
+
 
       var rb = responseBody;
       var countries  = require('country-data').countries;
@@ -156,7 +161,6 @@ module.exports = {
           if (err) { return exits.error(err); }
 
           // sort by performance
-
 
           response.data.sort(function(a,b){
             return b.insights.data[0].impressions - a.insights.data[0].impressions;
