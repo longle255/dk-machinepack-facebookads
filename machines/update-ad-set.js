@@ -61,7 +61,7 @@ module.exports = {
       console.log('minimum budget needs to be greater than 100 cents. However, 0 is an acceptable value.');
       return exits.budgetError();
     }
-
+    // if budget is set to 0, then pause the campaign.
     if (inputs.dailyBudget == 0) {
       console.log('0');
       doJSONRequest({
@@ -95,6 +95,7 @@ module.exports = {
     function (err, responseBody) {
       if (err) { return exits.error(err); }
       return exits.success('changed daily budget');
+      console.log(responseBody)
     });
     }
   } // function (inputs, exits)
