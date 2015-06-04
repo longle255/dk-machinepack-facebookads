@@ -14,15 +14,20 @@ module.exports = {
     fbUserId: {
       example: '509503',
       description: 'facebook user id',
-      required: true
+      required: true,
     },
 
     adCampaignGroupId: {
       example: '3213213124',
       description: 'woo campaign group id',
-      required: true
+      required: true,
     },
 
+    adImages: {
+      example: "['fadlk3421jkl;rehui234', '1235tgds43q41234']",
+      description: 'an array of image_hashes returned by facebook',
+      required: true,
+    },
 
     accessToken: {
       example: 'CAACEdEose0cBACBhZA7DJbYapwM7oZBt1EWhPiGqibBZAZAZCZCe6IOkfDRzrs1jyZCS93zSuj9GaNQQtxbny0jeSCqyBNaQUl3ocDiD3lO4GSboFm5B7NogSHFzTGYw0rdpndDKolQcfsS5nYeYwZAIKXF1WPzgGaGxNIDh36oZBHuazcN3WSNmL9jGyO9YmYlZBmZCcigBuMFvtXj4XlzNWyb',
@@ -33,7 +38,6 @@ module.exports = {
 
 
   defaultExit: 'success',
-
 
   exits: {
 
@@ -52,6 +56,18 @@ module.exports = {
 
   fn: function (inputs,exits) {
     // fetch ad set information
+
+    // create the ad set
+    doBatchRequest({
+      method: 'post',
+      url: ['/v2.3', ]
+    })
+
+
+
+
+
+
     var doJSONRequest = require('../lib/do-request');
 
     getAdAccountId = require('machine').build(require('./get-ad-account-id'));

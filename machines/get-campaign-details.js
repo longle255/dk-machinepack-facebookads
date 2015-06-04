@@ -214,13 +214,13 @@ module.exports = {
             if (countChoco == arrayAds.length) {
 
               // once we have finished getting all the data, split the ads into two arrays, based on active or not.
-
+              console.log(resultJson);
               resultJson.disabledAds = resultJson.ads.filter( function(ad) {
                 return ad.status == 'PAUSED';
               }),
 
               resultJson.ads = resultJson.ads.filter( function(ad) {
-                return ad.status == 'ACTIVE';
+                return ad.status == 'ACTIVE' || ad.status == 'CAMPAIGN_PAUSED' || ad.status == 'CAMPAIGN_GROUP_PAUSED' ;
               }),
 
               callbacktwo(resultJson);
