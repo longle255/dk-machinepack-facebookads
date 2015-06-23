@@ -51,7 +51,7 @@ module.exports = {
       url: ['/v2.3/', inputs.adCampaignGroupId ].join(""),
       data: {
         'access_token': inputs.accessToken,
-        'fields' : 'adcampaigns{id,daily_budget,campaign_status,stats}'
+        'fields' : 'adcampaigns{id,account_id,campaign_group_id,campaign_status,daily_budget,stats,lifetime_budget,name},adgroups{name}'
       },
       headers: {},
     },
@@ -66,8 +66,10 @@ module.exports = {
         newArray.push({
           'id' : myJson.data[i].id,
           'daily_budget' : myJson.data[i].daily_budget,
-          'clicks' : myJson.data[i].stats.clicks,
-          'impressions' : myJson.data[i].stats.impressions
+          'lifetime_budget' : myJson.data[i].lifetime_budget,
+          'stats' : myJson.data[i].stats,
+          'name': myJson.data[i].name,
+          'campaign_status': myJson.data[i].campaign_status
          });
        }
        responseBody = newArray;

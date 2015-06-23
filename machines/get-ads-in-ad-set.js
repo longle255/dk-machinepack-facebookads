@@ -52,7 +52,7 @@ module.exports = {
       url: ['/v2.3/', inputs.adCampaignId, '/adgroups' ].join(""),
       data: {
         'access_token': inputs.accessToken,
-        'fields' : 'id,stats'
+        'fields' : 'id,stats,name,adgroup_status'
       },
       headers: {},
     },
