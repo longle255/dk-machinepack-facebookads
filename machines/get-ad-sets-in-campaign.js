@@ -44,14 +44,14 @@ module.exports = {
   fn: function (inputs,exits) {
 
     var doJSONRequest = require('../lib/do-request');
-
+    var fields = inputs.fields || 'adcampaigns{id,account_id,campaign_group_id,campaign_status,daily_budget,stats,lifetime_budget,name},adgroups{name}';
     // GET ad accounts/ and send the api token as a header
     doJSONRequest({
       method: 'get',
       url: ['/v2.3/', inputs.adCampaignGroupId ].join(""),
       data: {
         'access_token': inputs.accessToken,
-        'fields' : 'adcampaigns{id,account_id,campaign_group_id,campaign_status,daily_budget,stats,lifetime_budget,name},adgroups{name}'
+        'fields' : fields
       },
       headers: {},
     },
