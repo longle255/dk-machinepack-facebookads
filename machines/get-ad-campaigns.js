@@ -44,7 +44,7 @@ module.exports = {
   fn: function(inputs, exits) {
 
     var doJSONRequest = require('../lib/do-request');
-    var field = inputs.fields || 'name';
+    var fields = inputs.fields || 'name';
 
     // GET ad accounts/ and send the api token as a header
     doJSONRequest({
