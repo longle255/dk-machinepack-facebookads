@@ -41,39 +41,47 @@ module.exports = {
   },
 
 
-  fn: function (inputs,exits) {
+  fn: function(inputs, exits) {
 
     var doJSONRequest = require('../lib/do-request');
-    var fields = inputs.fields || 'adcampaigns{id,account_id,campaign_group_id,campaign_status,daily_budget,stats,lifetime_budget,name},adgroups{name}';
+    var fields = inputs.fields || 'adcampaigns{id,campaign_group_id,campaign_status,daily_budget,lifetime_budget,name,stats}';
+    var data = {
+      'access_token': inputs.accessToken,
+      'fields': fields
+    };
+    if (inputs.queries) {
+      for (var i in inputs.queries) {
+        data[i] = inputs.queries[i];
+      }
+    }
     // GET ad accounts/ and send the api token as a header
     doJSONRequest({
-      method: 'get',
-      url: ['/v2.3/', inputs.adCampaignGroupId ].join(""),
-      data: {
-        'access_token': inputs.accessToken,
-        'fields' : fields
+        method: 'get',
+        url: ['/v2.3/', inputs.adCampaignGroupId].join(""),
+        data: data,
+        headers: {},
       },
-      headers: {},
-    },
-    function (err, responseBody) {
-      if (err) { return exits.error(err); }
+      function(err, responseBody) {
+        if (err) {
+          return exits.error(err);
+        }
 
-      var myJson = responseBody.adcampaigns;
-      var newArray = [];
-      var len = myJson.data.length;
-      console.log(myJson.data.length);
-      for (var i=0; i<len; i++){
-        newArray.push({
-          'id' : myJson.data[i].id,
-          'daily_budget' : myJson.data[i].daily_budget,
-          'lifetime_budget' : myJson.data[i].lifetime_budget,
-          'stats' : myJson.data[i].stats,
-          'name': myJson.data[i].name,
-          'campaign_status': myJson.data[i].campaign_status
-         });
-       }
-       responseBody = newArray;
-      return exits.success(responseBody);
-    });
+        var myJson = responseBody.adcampaigns;
+        var newArray = [];
+        var len = myJson.data.length;
+        for (var i = 0; i < len; i++) {
+          newArray.push({
+            'id': myJson.data[i].id,
+            'name': myJson.data[i].name,
+            'campaign_group_id': myJson.data[i].campaign_group_id,
+            'daily_budget': myJson.data[i].daily_budget,
+            'lifetime_budget': myJson.data[i].lifetime_budget,
+            'campaign_status': myJson.data[i].campaign_status,
+            'stats': myJson.data[i].stats
+          });
+        }
+        responseBody = newArray;
+        return exits.success(responseBody);
+      });
   }
 };
